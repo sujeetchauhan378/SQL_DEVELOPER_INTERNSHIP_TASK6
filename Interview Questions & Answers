@@ -1,0 +1,72 @@
+
+##Interview Questions & Answers — Task 6: Subqueries & Nested Queries
+
+1. What is a subquery?
+
+A subquery is a query inside another SQL query.
+It provides results that the outer query uses for filtering, selection, or calculation.
+Can be placed in SELECT, FROM, or WHERE clauses.
+
+2. Difference between subquery and join?
+Subquery:-Produces a temporary result used by the outer query.
+Join:- Combines rows from two or more tables into a single result set.
+
+3. What is a correlated subquery?
+
+A subquery that refers to columns from the outer query.
+Runs once for each row processed by the outer query.
+Example: SELECT EmpName
+FROM Employees e
+WHERE Salary > (SELECT AVG(Salary) 
+                FROM Employees 
+                WHERE DeptID = e.DeptID);
+
+4. Can subqueries return multiple rows?
+
+Yes, when used with operators like:
+IN
+EXISTS
+ANY
+ALL
+For single-value contexts (=), it must return only one value.
+
+5. How does EXISTS work?
+
+Returns TRUE if the subquery returns at least one row.
+Stops scanning after the first matching row — making it efficient for existence checks.
+Example: SELECT CustName
+FROM Customers c
+WHERE EXISTS (SELECT 1 FROM Orders o WHERE o.CustID = c.CustID);
+
+6. How is performance affected by subqueries?
+
+Correlated subqueries can be slow because they run once per outer row.
+Use indexes and rewrite as joins if possible.
+Uncorrelated subqueries run only once and are generally faster.
+
+7. What is a scalar subquery?
+
+A subquery that returns exactly one value (one row, one column).
+Often used in SELECT or WHERE comparisons.
+Example: SELECT EmpName
+FROM Employees
+WHERE Salary = (SELECT MAX(Salary) FROM Employees);
+
+8. Where can we use subqueries?
+
+SELECT — for calculated columns.
+WHERE / HAVING — for filtering.
+FROM — as derived tables (inline views).
+Inside DML (INSERT, UPDATE, DELETE) statements.
+
+9. Can a subquery be in FROM clause?
+
+Yes — called a derived table or inline view.
+Must be given an alias.
+Example: SELECT *
+FROM (SELECT DeptID, AVG(Salary) AS AvgSalary FROM Employees GROUP BY DeptID) AS DeptAvg;
+
+10. What is a derived table?
+
+A subquery inside the FROM clause treated as a temporary table.
+Exists only during query execution.
